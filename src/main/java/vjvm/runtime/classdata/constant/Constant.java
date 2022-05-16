@@ -30,22 +30,37 @@ public abstract class Constant {
         break;
       }
       case CONSTANT_Double:
+        result=new DoubleConstant(input);
+        count=2;
+        break;
       case CONSTANT_Long:
-        result = new UnknownConstant(input, 8);
+        result = new LongConstant(input);
         count = 2;
         break;
       case CONSTANT_MethodHandle:
         result = new UnknownConstant(input, 3);
         break;
       case CONSTANT_String:
+        result=new StringConstant(input,jClass);
+        break;
       case CONSTANT_Class:
+        result = new ClassConstant(input,jClass);
+        break;
       case CONSTANT_MethodType:
         result = new UnknownConstant(input, 2);
         break;
       case CONSTANT_Float:
+        result=new FloatConstant(input);
+        break;
       case CONSTANT_Fieldref:
+        result=new FieldrefConstant(input,jClass);
+        break;
       case CONSTANT_Methodref:
+        result=new MethodrefConstant(input,jClass);
+        break;
       case CONSTANT_InterfaceMethodref:
+        result=new InterfaceMethodref(input,jClass);
+        break;
       case CONSTANT_Dynamic:
       case CONSTANT_InvokeDynamic:
         result = new UnknownConstant(input, 4);

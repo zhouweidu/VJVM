@@ -5,6 +5,7 @@ import vjvm.runtime.classdata.ConstantPool;
 import vjvm.runtime.classdata.FieldInfo;
 import vjvm.runtime.classdata.MethodInfo;
 import vjvm.runtime.classdata.attribute.Attribute;
+import vjvm.runtime.classdata.constant.ClassConstant;
 import vjvm.utils.UnimplementedError;
 import java.io.DataInput;
 import java.io.InvalidClassException;
@@ -26,8 +27,17 @@ public class JClass {
   private final ConstantPool constantPool;
   @Getter
   private final int accessFlags;
+  @Getter
+  private final String thisClass;
+  @Getter
+  private final String superClass;
+  @Getter
+  private final ClassConstant[] interfaces;
+  @Getter
   private final FieldInfo[] fields;
+  @Getter
   private final MethodInfo[] methods;
+  @Getter
   private final Attribute[] attributes;
 
   @SneakyThrows
@@ -46,14 +56,36 @@ public class JClass {
 
     constantPool = new ConstantPool(dataInput, this);
     accessFlags = dataInput.readUnsignedShort();
+    int thisClassIndex=dataInput.readUnsignedShort();
+    thisClass=((ClassConstant)(constantPool.constant(thisClassIndex))).name();
+    int superClassCount=dataInput.readUnsignedShort();
+    superClass=((ClassConstant)(constantPool.constant(superClassCount))).name();
+    int interfacesCount=dataInput.readUnsignedShort();
+    interfaces=new ClassConstant[interfacesCount];
+    for (int i = 0; i < interfacesCount; i++) {
+      int indexInterfaces=dataInput.readUnsignedShort();
+      interfaces[i]=(ClassConstant) (constantPool.constant(indexInterfaces));
+    }
+    int fieldsCount=dataInput.readUnsignedShort();
+    fields = new FieldInfo[fieldsCount];
+    for (int i = 0; i < fieldsCount; i++) {
+      fields[i]=new FieldInfo(dataInput,this);
+    }
+    int methodsCount=dataInput.readUnsignedShort();
+    methods = new MethodInfo[methodsCount];
+    for (int i = 0; i < methodsCount; i++) {
+      methods[i]=new MethodInfo(dataInput,this);
+    }
+    int attributesCount=dataInput.readUnsignedShort();
+    attributes = new Attribute[attributesCount];
+    for (int i = 0; i < attributesCount; i++) {
+      attributes[i]=Attribute.constructFromData(dataInput,constantPool);
+    }
 
-    fields = null;
-    methods = null;
-    attributes = null;
-    throw new UnimplementedError(
-        "TODO: you need to construct thisClass, superClass, interfaces, fields, "
-        + "methods, and attributes from dataInput in lab 1.2; remove this for lab 1.1."
-        + "Some of them are not defined; you need to define them yourself");
+//    throw new UnimplementedError(
+//        "TODO: you need to construct thisClass, superClass, interfaces, fields, "
+//        + "methods, and attributes from dataInput in lab 1.2; remove this for lab 1.1."
+//        + "Some of them are not defined; you need to define them yourself");
   }
 
   public boolean public_() {
