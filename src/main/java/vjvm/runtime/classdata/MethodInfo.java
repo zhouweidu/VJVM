@@ -6,6 +6,7 @@ import vjvm.classfiledefs.MethodDescriptors;
 import vjvm.runtime.JClass;
 import vjvm.runtime.classdata.attribute.Attribute;
 import vjvm.runtime.classdata.attribute.Code;
+import vjvm.runtime.classdata.constant.UTF8Constant;
 import vjvm.utils.UnimplementedError;
 
 import java.io.DataInput;
@@ -30,7 +31,23 @@ public class MethodInfo {
 
   @SneakyThrows
   public MethodInfo(DataInput dataInput, JClass jClass) {
-    throw new UnimplementedError("TODO: Get method information from constant pool");
+    accessFlags=dataInput.readShort();
+    int nameIndex=dataInput.readUnsignedShort();
+    name=((UTF8Constant)(jClass.constantPool().constant(nameIndex))).value();
+    int descriptorIndex=dataInput.readUnsignedShort();
+    descriptor=((UTF8Constant)(jClass.constantPool().constant(descriptorIndex))).value();
+    int attributesCount=dataInput.readUnsignedShort();
+    attributes=new Attribute[attributesCount];
+    for (int i = 0; i < attributesCount; i++) {
+      attributes[i]=Attribute.constructFromData(dataInput,jClass.constantPool());
+    }
+    this.jClass=jClass;
+//    throw new UnimplementedError("TODO: Get method information from constant pool");
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%s(0x%x): %s",name,accessFlags,descriptor);
   }
 
   public int argc() {

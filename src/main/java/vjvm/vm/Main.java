@@ -85,6 +85,30 @@ class Dump implements Callable<Integer> {
   }
 
   private void dump(JClass clazz) {
-    throw new UnimplementedError("TODO: dump clazz in lab 1.2; remove this for 1.1");
+    System.out.println("class name: "+clazz.thisClass());
+    System.out.println(String.format("minor version: %d",clazz.minorVersion()));
+    System.out.println(String.format("major version: %d",clazz.majorVersion()));
+    System.out.println(String.format("flags: 0x%x",clazz.accessFlags()));
+    System.out.println(String.format("this class: %s",clazz.thisClass()));
+    System.out.println(String.format("super class: %s",clazz.superClass()));
+    System.out.println("constant pool:");
+    for (int i = 1; i < clazz.constantPool().size(); i++) {
+      if (clazz.constantPool().constant(i)!=null) {
+        System.out.println("#" + i + " = " + clazz.constantPool().constant(i));
+      }
+    }
+    System.out.println("interfaces:");
+    for (int i = 0; i < clazz.interfaces().length; i++) {
+      System.out.println(clazz.interfaces()[i].name());
+    }
+    System.out.println("fields:");
+    for (int i = 0; i < clazz.fields().length; i++) {
+      System.out.println(clazz.field(i));
+    }
+    System.out.println("methods:");
+    for (int i = 0; i < clazz.methods().length; i++) {
+      System.out.println(clazz.method(i));
+    }
+//    throw new UnimplementedError("TODO: dump clazz in lab 1.2; remove this for 1.1");
   }
 }

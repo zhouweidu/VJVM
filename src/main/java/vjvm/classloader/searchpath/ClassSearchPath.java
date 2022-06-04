@@ -2,8 +2,10 @@ package vjvm.classloader.searchpath;
 
 import vjvm.utils.UnimplementedError;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.io.Closeable;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 /**
  * Represents a path to search class files in.
@@ -16,7 +18,18 @@ public abstract class ClassSearchPath implements Closeable {
    */
   public static ClassSearchPath[] constructSearchPath(String path) {
     String sep = System.getProperty("path.separator");
-    throw new UnimplementedError("TODO: parse path and return an array of search paths");
+    String[] paths = path.split(sep);
+    ArrayList<ClassSearchPath> classSearchPaths = new ArrayList<>();
+    for (String searchPath :
+      paths) {
+      if (searchPath.endsWith(".jar")||searchPath.endsWith(".JAR")){
+        classSearchPaths.add(new JarSearchPath(searchPath));
+      }else{
+        classSearchPaths.add(new DirSearchPath(searchPath));
+      }
+    }
+    return classSearchPaths.toArray(new ClassSearchPath[0]);
+//    throw new UnimplementedError("TODO: parse path and return an array of search paths");
   }
 
   /**
