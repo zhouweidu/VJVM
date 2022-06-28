@@ -22,7 +22,18 @@ public class XRETURN<T> extends Instruction {
   public static XRETURN<Void> RETURN(ProgramCounter pc, MethodInfo method) {
     return new XRETURN<>(s -> null, Function.identity(), null, "return");
   }
-
+  public static XRETURN<Integer> IRETURN(ProgramCounter pc,MethodInfo method){
+    return new XRETURN<>(OperandStack::popInt,Function.identity(),OperandStack::pushInt,"ireturn");
+  }
+  public static XRETURN<Float> FRETURN(ProgramCounter pc,MethodInfo method){
+    return new XRETURN<>(OperandStack::popFloat,Function.identity(),OperandStack::pushFloat,"freturn");
+  }
+  public static XRETURN<Long> LRETURN(ProgramCounter pc,MethodInfo method){
+    return new XRETURN<>(OperandStack::popLong,Function.identity(),OperandStack::pushLong,"lreturn");
+  }
+  public static XRETURN<Double> DRETURN(ProgramCounter pc,MethodInfo method){
+    return new XRETURN<>(OperandStack::popDouble,Function.identity(),OperandStack::pushDouble,"dreturn");
+  }
   @Override
   public void run(JThread thread) {
     var returnValue = popFunc.apply(thread.top().stack());

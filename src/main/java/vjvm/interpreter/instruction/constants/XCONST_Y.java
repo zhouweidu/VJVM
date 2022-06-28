@@ -26,7 +26,7 @@ public class XCONST_Y<T> extends Instruction {
   }
 
   public static final XCONST_Y<Integer> ICONST_1(ProgramCounter pc, MethodInfo method) {
-    return new XCONST_Y<Integer>(-1, OperandStack::pushInt, "iconst_1");
+    return new XCONST_Y<Integer>(1, OperandStack::pushInt, "iconst_1");
   }
 
   public static final XCONST_Y<Integer> ICONST_2(ProgramCounter pc, MethodInfo method) {
@@ -44,7 +44,27 @@ public class XCONST_Y<T> extends Instruction {
   public static final XCONST_Y<Integer> ICONST_5(ProgramCounter pc, MethodInfo method) {
     return new XCONST_Y<Integer>(5, OperandStack::pushInt, "iconst_5");
   }
-
+  public static final XCONST_Y<Long> LCONST_0(ProgramCounter pc,MethodInfo method){
+    return new XCONST_Y<Long>(0L,OperandStack::pushLong,"lconst_0");
+  }
+  public static final XCONST_Y<Long> LCONST_1(ProgramCounter pc,MethodInfo method){
+    return new XCONST_Y<Long>(1L,OperandStack::pushLong,"lconst_1");
+  }
+  public static final XCONST_Y<Float> FCONST_0(ProgramCounter pc,MethodInfo method){
+    return new XCONST_Y<Float>(0.0f,OperandStack::pushFloat,"fconst_0");
+  }
+  public static final XCONST_Y<Float> FCONST_1(ProgramCounter pc,MethodInfo method){
+    return new XCONST_Y<Float>(1.0f,OperandStack::pushFloat,"fconst_1");
+  }
+  public static final XCONST_Y<Float> FCONST_2(ProgramCounter pc,MethodInfo method){
+    return new XCONST_Y<Float>(2.0f,OperandStack::pushFloat,"fconst_2");
+  }
+  public static final XCONST_Y<Double> DCONST_0(ProgramCounter pc,MethodInfo method){
+    return new XCONST_Y<Double>(0.0d,OperandStack::pushDouble,"dconst_0");
+  }
+  public static final XCONST_Y<Double> DCONST_1(ProgramCounter pc,MethodInfo method){
+    return new XCONST_Y<Double>(1.0d,OperandStack::pushDouble,"dconst_1");
+  }
   @Override
   public void run(JThread thread) {
     var stack = thread.top().stack();

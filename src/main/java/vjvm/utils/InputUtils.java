@@ -20,7 +20,7 @@ public class InputUtils {
     boolean negative = false;
     int c = in.read();
 
-    while (Character.isSpaceChar(c)) {
+    while (Character.isWhitespace(c)) {
       c = in.read();
     }
 
@@ -40,6 +40,11 @@ public class InputUtils {
 
   @SneakyThrows
   public static char readChar() {
-    return (char) System.in.read();
+    var in=System.in;
+    int c = in.read();
+    while (Character.isWhitespace(c)) {
+      c = in.read();
+    }
+    return (char) c;
   }
 }

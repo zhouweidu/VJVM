@@ -40,6 +40,9 @@ public class MethodInfo {
     attributes=new Attribute[attributesCount];
     for (int i = 0; i < attributesCount; i++) {
       attributes[i]=Attribute.constructFromData(dataInput,jClass.constantPool());
+      if (attributes[i] instanceof Code){
+        code=(Code) attributes[i];
+      }
     }
     this.jClass=jClass;
 //    throw new UnimplementedError("TODO: Get method information from constant pool");

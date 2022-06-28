@@ -10,9 +10,37 @@ import static vjvm.classfiledefs.Descriptors.DESC_reference;
 public class MethodDescriptors {
   public static int argc(String descriptor) {
     assert descriptor.startsWith("(");
-
+    int res = 0, n = 1;
+    while (n < descriptor.indexOf(')')) {
+      if (descriptor.charAt(n) == '[') {
+        while (descriptor.charAt(n) == '[') {
+          n++;
+        }
+        if (descriptor.charAt(n) == 'L') {
+          while (descriptor.charAt(n) != ';') {
+            n++;
+          }
+        }
+        n++;
+        res++;
+      } else if (descriptor.charAt(n) == 'L') {
+        while (descriptor.charAt(n) != ';') {
+          n++;
+        }
+        res++;
+        n++;
+      } else {
+        if (descriptor.charAt(n) == 'J' || descriptor.charAt(n) == 'D') {
+          res += 2;
+        } else {
+          res += 1;
+        }
+        n++;
+      }
+    }
     // TODO: calculate arguments size in slots
-    throw new UnimplementedError();
+//    throw new UnimplementedError();
+    return res;
   }
 
   public static char returnType(String descriptor) {

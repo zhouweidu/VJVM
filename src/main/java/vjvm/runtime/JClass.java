@@ -150,6 +150,6 @@ public class JClass {
 
   public String name() {
     // TODO: return class name from thisClass
-    throw new UnimplementedError();
+    return thisClass;
   }
 }

@@ -61,10 +61,15 @@ public class JInterpreter {
   }
 
   public void setBreakpoint(MethodInfo method, int offset) {
+    Breakpoint breakpoint = new Breakpoint(method, offset);
+    breakpoint.enable();
+    breakpoints.add(breakpoint);
     // TODO(optional): add and enable a breakpoint
   }
 
   public void removeBreakpoint(int index) {
+    Breakpoint breakpoint = breakpoints.remove(index);
+    breakpoint.disable();
     // TODO(optional): disable and remove the breakpoint at breakpoints[index]
   }
 
@@ -84,7 +89,6 @@ public class JInterpreter {
       var op = Decoder.decode(thread.pc(), frame.method());
       steps--;
       op.run(thread);
-
       // TODO(optional): handle breakpoints
     }
   }

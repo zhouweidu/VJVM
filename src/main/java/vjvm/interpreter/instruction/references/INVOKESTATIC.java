@@ -5,7 +5,9 @@ import vjvm.interpreter.instruction.Instruction;
 import vjvm.runtime.JClass;
 import vjvm.runtime.JThread;
 import vjvm.runtime.ProgramCounter;
+import vjvm.runtime.classdata.ConstantPool;
 import vjvm.runtime.classdata.MethodInfo;
+import vjvm.runtime.classdata.constant.MethodrefConstant;
 import vjvm.utils.UnimplementedError;
 
 public class INVOKESTATIC extends Instruction {
@@ -13,7 +15,10 @@ public class INVOKESTATIC extends Instruction {
 
   public INVOKESTATIC(ProgramCounter pc, MethodInfo method) {
     // TODO: decode invokestatic
-    throw new UnimplementedError();
+//    throw new UnimplementedError();
+    ConstantPool constantPool=method.jClass().constantPool();
+    MethodrefConstant methodrefConstant=(MethodrefConstant) constantPool.constant(pc.ushort());
+    this.method=methodrefConstant.value();
   }
 
   @Override
